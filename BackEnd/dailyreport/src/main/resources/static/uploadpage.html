@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>日志提交</title>
+</head>
+<style>
+    table{border-collapse:collapse; border-spacing:0; border:0px; display:table;}
+</style>
+<body style="text-align: center">
+<div style="margin: 0 auto;width: 800px">
+    <div>
+        <h1 style="align-content: center;text-align: center">日志提交</h1>
+    </div>
+    <div style="margin-top: 50px;text-align: center;">
+        <form action="submitReport/submitDailyReport" style="text-align: center"  method="post" enctype="multipart/form-data">
+            <table style="margin: 0 auto;width: 300px;table-layout: fixed">
+                <tr style="height: 70px">
+                    <td>
+                        <input type="file" name="file" style="font-size: 22px;margin-left: 0px" value="选择文件">
+                    </td>
+                </tr>
+                <tr style="height: 70px">
+                    <td style="text-align: left">
+                        <input type="submit" value="提交" style="font-size: 22px;margin-left: 0px">
+                    </td>
+                    <td style="text-align: right">
+                        <input type="reset" value="重置" style="font-size: 22px;margin-left: 0px">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

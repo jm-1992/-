@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ibestservice.dailyreport.mapper.DailyReportSubmitMapper">
+
+    <!--根据工号查询员工姓名信息 -->
+    <select id="getEmplById" parameterType="String" resultType="com.ibestservice.dailyreport.bean.ProjectJournalBean">
+        SELECT
+            empl_id AS emplId,
+            empl_name AS emplName
+        FROM
+            t_empl_person
+        WHERE
+            empl_id =#{emplId}
+    </select>
+
+    <!--根据项目编号查询项目名称信息等 -->
+    <select id="getEmplByProjectId" parameterType="String" resultType="com.ibestservice.dailyreport.bean.ProjectJournalBean">
+        SELECT
+            project_id AS projectId,
+            project_name AS projectName
+        FROM
+            t_project_approval
+        WHERE
+            project_id=#{projectId}
+    </select>
+
+    <!--根据用户ID，删除当天用户已经上传的数据 -->
+    <delete id="deleteJournalByEmplId" parameterType="String">
+        DELETE
+        FROM
+            t_project_journal
+        WHERE
+            empl_id = #{emplId}
+            AND DATE_FORMAT( submit_date, '%Y-%m-%d' ) = DATE_FORMAT( SYSDATE( ), '%Y-%m-%d' )
+    </delete>
+
+    <!--批量添加工作任务 -->
+    <insert id="insertJournals" parameterType="com.ibestservice.dailyreport.bean.ProjectJournalBean"
+            keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO t_project_journal ( empl_id, empl_name, job_content, project_id, project_name, working_hours, summary, submit_date )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+        (
+            #{item.emplId},
+            #{item.emplName},
+            #{item.jobContent},
+            #{item.projectId},
+            #{item.projectName},
+            #{item.workingHours},
+            #{item.summary},
+            sysdate()
+            )
+        </foreach>
+    </insert>
+</mapper>

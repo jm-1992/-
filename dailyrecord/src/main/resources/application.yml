@@ -1,0 +1,37 @@
+#服务器端口和项目名称配置
+server:
+  port: 8080
+#数据库配置
+spring:
+    datasource:
+        name: dev_record
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://10.7.25.11:3306/dailyrecord?useUnicode=true&characterEncoding=utf-8&userSSL=false&serverTimezone=GMT%2B8
+        username: root
+        password: Ibest0416
+        # 使用druid数据源
+        type: com.alibaba.druid.pool.DruidDataSource
+        filters: stat
+        maxActive: 20
+        initialSize: 1
+        maxWait: 60000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+    debug: true
+  #配置Mapper.xml映射文件
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.ibestservice.dailyrecord.entity
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    com.ibestservice.dailyrecord: debug
+  config: classpath:log4j2.yml # 指定log4j配置文件的位置

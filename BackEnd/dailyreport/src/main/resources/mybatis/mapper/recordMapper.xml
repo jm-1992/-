@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ibestservice.dailyreport.mapper.RecordMapper">
+    <!--批量添加工作任务 -->
+    <insert id="insertRecord" parameterType="Map">
+        insert into t_person_record(empl_id,empl_name,domain_account,is_write_journal,should_working_hours,
+        actual_working_hours,statistical_date)
+        select t.empl_id,t.empl_name,t.domain_account,if(tpv.leave_time=480,0,t.is_journal) is_write_journal,
+        480-ifnull(tpv.leave_time,0) should_working_hours, t.working_hours*60 actual_working_hours,
+        t.submit_date statistical_date
+        from (
+            select tpj.empl_id,sum(tpj.working_hours) working_hours,tpj.submit_date,tep.empl_name,tep.domain_account,
+            tep.is_journal from t_empl_person tep,t_project_journal tpj
+            where   tep.empl_id=tpj.empl_id and str_to_date(#{startTime}, '%Y-%m-%d') <![CDATA[ <= ]]> tpj.submit_date
+            and tpj.submit_date <![CDATA[ <= ]]> str_to_date(#{endTime}, '%Y-%m-%d')
+            group by tpj.empl_id,tpj.submit_date
+        ) t
+        left join t_person_vacation tpv on t.empl_id = tpv.empl_id and TO_DAYS(tpv.leave_date) = TO_DAYS(t.submit_date)
+    </insert>
+</mapper>

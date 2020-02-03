@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <link rel="stylesheet" type="text/css" href="upload.css"/>
+    <style>
+
+    </style>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        function uploadExcel() {
+            var startTime=$("#startTime").val();
+            var endTime=$("#endTime").val();
+            var form = new FormData(document.getElementById("uploadfile"));
+            $.ajax({
+                //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "excelDeal?startStr="+startTime+"&endStr="+endTime ,//url
+                data: form,
+                contentType:false,
+                processData: false,
+                success: function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.code == 1) {
+                        alert("上传成功");
+                    }else if(result.code==0){
+                        alert(result.message)
+                    }
+                    ;
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+<div id="login_frame">
+
+    <p id="image_logo" style="font-size: 30px">请假excel文件提交</p>
+
+    <form  id="uploadfile" action="#" onsubmit="return false" method="post"
+           enctype="multipart/form-data" style="text-align: left;">
+        <p>
+            <label class="label_input">excel：</label>
+            <input type="file" id="file" name="file" required="required" class="text_field"/>
+        </p>
+        <p>
+            <label class="label_input" style="width:auto">开始时间：</label>
+            <input id="startTime" type="date" name="startTime" style="height:25px;font-size: 20px;"/>
+        </p>
+        <p>
+            <label class="label_input" style="width:auto">结束时间：</label>
+            <input id="endTime" type="date" name="endTime" style="height:25px;font-size: 20px;"/>
+        </p>
+        <div id="login_control">
+            <input type="button" id="btn_login" value="提交" onclick="uploadExcel()"/>
+        </div>
+    </form>
+</div>
+
+</body>
+
+</html>

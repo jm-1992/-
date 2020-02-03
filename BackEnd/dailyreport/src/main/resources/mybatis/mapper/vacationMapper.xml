@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ibestservice.dailyreport.mapper.VacationMapper">
+    <!--批量添加工作任务 -->
+    <insert id="insertVacation" parameterType="com.ibestservice.dailyreport.bean.VacationBean">
+        INSERT INTO t_person_vacation ( empl_id, empl_name, start_time, end_time, leave_time,leave_date)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+                #{item.emplId},
+                #{item.emplName},
+                #{item.startTime},
+                #{item.endTime},
+                #{item.leaveTime},
+                #{item.leaveDate}
+            )
+        </foreach>
+    </insert>
+</mapper>
